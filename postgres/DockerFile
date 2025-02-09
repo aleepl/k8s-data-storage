@@ -1,0 +1,13 @@
+# Use the official PostgreSQL image as the base
+FROM postgres:17.2-bookworm
+
+ENV POSTGIS_MAJOR 3
+
+# Install PostGIS
+RUN apt-get update && apt-get install -y \
+    postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
+    postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set up the initialization script
+COPY /postgres/init.sql /docker-entrypoint-initdb.d/
